@@ -5,7 +5,7 @@ extern crate cc;
 use std::env;
 
 fn main() {
-    println!("cargo::rerun-if-changed=vendor/spirv_reflect.c");
+    println!("cargo:rerun-if-changed=vendor/spirv_reflect.c");
 
     let mut build = cc::Build::new();
 
