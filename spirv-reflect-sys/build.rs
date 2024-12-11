@@ -2,20 +2,18 @@
 extern crate bindgen;
 extern crate cc;
 
-// use std::env;
+use std::env;
 
 fn main() {
-    println!("cargo:rerun-if-changed=vendor/spirv_reflect.h");
-    println!("cargo:rerun-if-changed=vendor/spirv_reflect.c");
-    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=vendor/spirv-reflect/spirv_reflect.h");
+    println!("cargo:rerun-if-changed=vendor/spirv-reflect/spirv_reflect.c");
 
-    let mut build = cc::Build::new()
-        .cpp(true)
-        .flag("-std=c++11")
-        .cpp_link_stdlib("stdc++");
+    let mut build = cc::Build::new();
+
+    build.cpp(true).flag("-std=c++11").cpp_link_stdlib("stdc++");
 
     build.include("src");
-    build.file("vendor/spirv_reflect.c");
+    build.file("vendor/spirv-reflect/spirv_reflect.c");
 
     let target = env::var("TARGET").unwrap();
     if target.contains("darwin") {
@@ -23,19 +21,19 @@ fn main() {
             .flag("-Wno-missing-field-initializers")
             .flag("-Wno-sign-compare")
             .flag("-Wno-deprecated")
-            .cpp_set_stdlib("c++")
+            .cpp_set_stdlib("c++");
     }
 
     build.compile("spirv_reflect_cpp");
 
     generate_bindings("src/bindings.rs");
-    println!("cargo:rerun-if-changed=vendor/spirv_reflect.h");
+    println!("cargo:rustc-link-lib=static=spirv_reflect_cpp");
 }
 
 #[cfg(feature = "generate_bindings")]
 fn generate_bindings(output_file: &str) {
     let bindings = bindgen::Builder::default()
-        .header("vendor/spirv_reflect.h")
+        .header("vendor/spirv-reflect/spirv_reflect.h")
         .size_t_is_usize(true)
         .blocklist_type("__darwin_.*")
         .allowlist_var("SPV.*")

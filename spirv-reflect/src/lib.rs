@@ -6,8 +6,9 @@ extern crate serde_derive;
 
 use num_traits::cast::FromPrimitive;
 
+use spirv_reflect_sys as ffi;
+
 pub mod convert;
-pub mod ffi;
 pub mod types;
 
 pub(crate) fn ffi_to_string(ffi: *const ::std::os::raw::c_char) -> String {
@@ -18,17 +19,17 @@ pub(crate) fn ffi_to_string(ffi: *const ::std::os::raw::c_char) -> String {
     }
 }
 
-impl Default for ffi::SpvReflectShaderModule {
-    fn default() -> Self {
-        unsafe { std::mem::zeroed() }
-    }
-}
+// impl Default for ffi::SpvReflectShaderModule {
+//     fn default() -> Self {
+//         unsafe { std::mem::zeroed() }
+//     }
+// }
 
-impl Default for ffi::SpvReflectDescriptorSet {
-    fn default() -> Self {
-        unsafe { std::mem::zeroed() }
-    }
-}
+// impl Default for ffi::SpvReflectDescriptorSet {
+//     fn default() -> Self {
+//         unsafe { std::mem::zeroed() }
+//     }
+// }
 
 #[derive(Default, Clone)]
 pub struct ShaderModule {

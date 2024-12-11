@@ -1,0 +1,15 @@
+[package]
+name = "spirv-reflect"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bitflags = "1.2"
+spirv = "0.2"
+num-traits = "0.2"
+serde = "1"
+serde_derive = "1"
+spirv-reflect-sys = { path = "../spirv-reflect-sys" }
+
+[dev-dependencies]
+serde_yaml = "0.8.11"
