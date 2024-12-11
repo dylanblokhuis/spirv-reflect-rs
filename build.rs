@@ -5,6 +5,8 @@ extern crate cc;
 use std::env;
 
 fn main() {
+    println!("cargo::rerun-if-changed=vendor/spirv_reflect.c");
+
     let mut build = cc::Build::new();
 
     build.include("src");
@@ -13,7 +15,7 @@ fn main() {
     let source_files = ["vendor/spirv_reflect.c"];
 
     for source_file in &source_files {
-        build.file(&source_file);
+        build.file(source_file);
     }
 
     let target = env::var("TARGET").unwrap();
