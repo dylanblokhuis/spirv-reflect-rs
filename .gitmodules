@@ -1,4 +1,4 @@
 [submodule "vendor"]
 	path = vendor
 	url = https://github.com/KhronosGroup/SPIRV-Reflect
-	branch = master
+	branch = main
