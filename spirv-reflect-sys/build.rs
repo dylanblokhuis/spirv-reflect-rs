@@ -1,8 +1,5 @@
-#[cfg(feature = "generate_bindings")]
 extern crate bindgen;
 extern crate cc;
-
-use std::env;
 
 fn main() {
     println!("cargo:rerun-if-changed=vendor/spirv-reflect/spirv_reflect.h");
@@ -15,7 +12,7 @@ fn main() {
     build.include("src");
     build.file("vendor/spirv-reflect/spirv_reflect.c");
 
-    let target = env::var("TARGET").unwrap();
+    let target = std::env::var("TARGET").unwrap();
     if target.contains("darwin") {
         build
             .flag("-Wno-missing-field-initializers")
@@ -30,7 +27,7 @@ fn main() {
     println!("cargo:rustc-link-lib=static=spirv_reflect_cpp");
 }
 
-#[cfg(feature = "generate_bindings")]
+// #[cfg(feature = "generate_bindings")]
 fn generate_bindings(output_file: &str) {
     let bindings = bindgen::Builder::default()
         .header("vendor/spirv-reflect/spirv_reflect.h")
@@ -48,6 +45,3 @@ fn generate_bindings(output_file: &str) {
         .write_to_file(std::path::Path::new(output_file))
         .expect("Unable to write bindings!");
 }
-
-#[cfg(not(feature = "generate_bindings"))]
-fn generate_bindings(_: &str) {}
